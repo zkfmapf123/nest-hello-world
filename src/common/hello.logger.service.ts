@@ -2,19 +2,19 @@ import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common'
 
 @Injectable()
 export class HelloLoggerService {
-  error(msg: string) {
-    Logger.error(msg)
+  error(msg: any) {
+    Logger.error(JSON.stringify(msg))
   }
 
-  log(msg: string) {
-    Logger.log(msg)
+  log(msg: any) {
+    Logger.log(JSON.stringify(msg))
   }
 
-  innerLog(msg: string) {
-    Logger.log('\t > '.concat(`${msg}`))
+  innerLog(msg: any) {
+    Logger.log('\t > '.concat(`${JSON.stringify(msg)}`))
   }
 
-  debug(msg: string) {
-    Logger.debug(msg)
+  debug(msg: any) {
+    Logger.debug(JSON.stringify(msg))
   }
 }

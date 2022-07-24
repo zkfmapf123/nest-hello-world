@@ -28,3 +28,11 @@ export interface ReturnParams<T> {
 export type ServiceReturnParams<T> = Dictionary<T> & {
   err: ErrorParams
 }
+
+/**
+ * serialize
+ */
+export interface Serializeable {
+  toDict(): any
+  inject(data: any): this
+}

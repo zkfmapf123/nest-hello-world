@@ -22,9 +22,11 @@
 
 - todo
 
-  - [ ] chalk
-  - [ ] userService
-  - [ ] loggerService (custom)
+  - [x] chalk
+  - [x] userService
+  - [x] loggerService (custom)
+  - [ ] fp-ts
+  - [ ] await-to-js
 
 - imports, controllers, providers, export
 
