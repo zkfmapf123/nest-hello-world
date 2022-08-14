@@ -1,21 +1,20 @@
 import { ArgumentMetadata, PipeTransform } from '@nestjs/common'
-import { ObjectSchema } from 'joi'
-import { serialize } from 'serializr'
-import { HelloLoggerService } from 'src/common/hello.logger.service'
+import { ObjectSchema, override } from 'joi'
+import { LoggerService } from 'src/common/logger.service'
 import { Serializeable } from './interface'
 
 export class ValidationParamsPipe implements PipeTransform {
-  protected logger: HelloLoggerService = new HelloLoggerService()
+  private readonly logger: LoggerService = new LoggerService()
 
   transform(value: any, metadata: ArgumentMetadata) {
     throw new Error('must be override')
   }
 
-  getSerializeParams(value: any, schema: ObjectSchema, model: Serializeable) {
+  validate(value: any, schema: ObjectSchema, model: Serializeable) {
     const { error, value: valdiateParams } = schema.validate(value)
 
     if (error) {
-      this.logger.error(error.details)
+      this.logger.error('validation Error', error)
       throw new Error('check required arguments')
     }
 

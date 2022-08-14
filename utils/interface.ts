@@ -1,33 +1,36 @@
-import { ExceptionType } from './type'
-
 /**
  * use interface & type
  */
 
-interface Dictionary<T> {
+export interface Dictionary<T> {
   [x: string]: T
 }
 
-interface ErrorParams {
+export interface ResultExceptionParams {
+  type: string
   msg: string
-  type: ExceptionType
 }
 
 /**
- * ReturnParams
+ * Try
  */
-export interface ReturnParams<T> {
-  params: T
-  exception: ErrorParams
+
+type Success<T> = {
+  readonly _tag: 'success'
+  readonly result: T
 }
+
+type Fail<T> = {
+  readonly _tag: 'failed'
+  readonly error: T
+}
+
+export type Try<E, T> = Success<T> | Fail<E>
 
 /**
  * [x : string] : T
  * err : ErrorParams
  */
-export type ServiceReturnParams<T> = Dictionary<T> & {
-  err: ErrorParams
-}
 
 /**
  * serialize

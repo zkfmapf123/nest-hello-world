@@ -1,98 +1,36 @@
-import { Body, Controller, Get, HttpCode, Inject, Param, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common'
-import { ApiOperation } from '@nestjs/swagger'
-import { UserModel } from 'src/base/UserModel'
-import { RegisterParamsPipe } from 'src/pipe/register.params.pipe'
-import { ReturnParams } from 'utils/interface'
-import { ExceptionType } from 'utils/type'
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
+import { User } from 'base/model'
+import { LoggerService } from 'src/common/logger.service'
+import { Url } from 'utils/type'
+import { LoginValidPipe, SingUpValidPipe } from './users.pipe'
 import { UsersService } from './users.service'
 
-@Controller('/users')
+@Controller(Url.ROOT_USERS)
 export class UsersController {
+  @Inject(LoggerService) logger: LoggerService
   @Inject(UsersService) userService: UsersService
 
   @Post()
-  @HttpCode(201)
-  @ApiOperation({
-    summary: 'Sign up user by creating an account',
-    description: 'Given by email, name, password',
-  })
-  async register(@Body(RegisterParamsPipe) userDto: UserModel): Promise<ReturnParams<boolean>> {
-    try {
-      const { isRegister, err } = await this.userService.register(userDto)
-
-      return {
-        params: isRegister,
-        exception: {
-          msg: err.msg,
-          type: err.type,
-        },
-      }
-    } catch (e) {
-      return {
-        params: false,
-        exception: {
-          msg: e.message,
-          type: ExceptionType.INTERNAL_ERR,
-        },
-      }
-    }
+  async SignUp(@Body(SingUpValidPipe) params: User) {
+    this.logger.info('users/signup')
+    const result = this.userService.signUp(params)
   }
 
-  // @Post('/email-verify')
-  // @HttpCode(201)
-  // @ApiOperation({
-  //   summary: 'verify by email',
-  //   description: 'Given by email token',
-  // })
-  // async emailVerify(@Query() token: string): Promise<ReturnParams<boolean>> {
-  //   try {
-  //     const { isVerify, err } = await this.userService.emailVerify(token)
+  @Post(Url.EMAIL_VERIFY)
+  async verify(@Query('signUpVerifyToken') token: string) {
+    this.logger.info('users/email-verify')
+    const result = this.userService.emailVerify(token)
+  }
 
-  //     return {
-  //       params: isVerify,
-  //       exception: {
-  //         msg: err.msg,
-  //         type: err.type,
-  //       },
-  //     }
-  //   } catch (e) {
-  //     return {
-  //       params: false,
-  //       exception: {
-  //         msg: e.message,
-  //         type: ExceptionType.INTERNAL_ERR,
-  //       },
-  //     }
-  //   }
-  // }
+  @Post(Url.LOGIN)
+  async login(@Body(LoginValidPipe) params: User) {
+    this.logger.info('users/login')
+    const result = this.userService.login(params)
+  }
 
-  // @Post('/login')
-  // @HttpCode(201)
-  // @ApiOperation({
-  //   summary: 'login by user',
-  //   description: 'Given by email, passwords',
-  // })
-  // async login(@Body() userDto: LoginUserDto): Promise<ReturnParams<boolean>> {
-  //   this.userService.login(userDto)
-
-  //   return {
-  //     params: true,
-  //     exception: null,
-  //   }
-  // }
-
-  // @Get('/:id')
-  // @HttpCode(200)
-  // @ApiOperation({
-  //   summary: 'get userinfo by user id',
-  //   description: 'Given by user id',
-  // })
-  // async getProfile(@Param() id: string): Promise<ReturnParams<boolean>> {
-  //   this.userService.getUser(id)
-
-  //   return {
-  //     params: true,
-  //     exception: null,
-  //   }
-  // }
+  @Get(Url._ID)
+  async getUser(@Param('id') userId: string) {
+    this.logger.info('users/getUser')
+    const result = this.userService.getUser(userId)
+  }
 }

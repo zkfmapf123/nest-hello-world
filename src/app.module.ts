@@ -1,7 +1,16 @@
-import { Logger as LoggerService, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
+import { UsersController } from './users/users.controller'
 import { UsersModule } from './users/users.module'
 
+const appModuels = [UsersModule]
+const infrastructureModules = []
+const queues = []
+
 @Module({
-  imports: [UsersModule],
+  imports: [...appModuels, ...infrastructureModules],
+  controllers: [],
 })
-export class AppModule {}
+export class AppModule {
+  // Logger
+  constructor() {}
+}
