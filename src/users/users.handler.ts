@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { User } from 'base/model'
-import { pipe } from 'fp-ts/lib/function'
-import { tryCatch } from 'fp-ts/lib/TaskEither'
-import { async } from 'rxjs'
 import { LoggerService } from 'src/common/logger.service'
 import { VerifyFactoryService } from 'src/verify/verify.factory.service'
 import { asyncVoidPipe, Try } from 'ts-dkutil'
@@ -35,12 +32,10 @@ export class UsersHandler {
       }
     }
 
-    const result = (await asyncVoidPipe(
+    return (await asyncVoidPipe(
       async () => this.userService.create(params),
       async () => this.verifyService.sendVerify(VerifyType.GMAIL, params),
     )) as unknown as Try<Error, string>
-
-    return result
   }
 
   // emailVerify(token: string) {
