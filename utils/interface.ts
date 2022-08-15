@@ -2,30 +2,12 @@
  * use interface & type
  */
 
+import { Try } from 'ts-dkutil'
+import { EntityManager } from 'typeorm'
+
 export interface Dictionary<T> {
   [x: string]: T
 }
-
-export interface ResultExceptionParams {
-  type: string
-  msg: string
-}
-
-/**
- * Try
- */
-
-type Success<T> = {
-  readonly _tag: 'success'
-  readonly result: T
-}
-
-type Fail<T> = {
-  readonly _tag: 'failed'
-  readonly error: T
-}
-
-export type Try<E, T> = Success<T> | Fail<E>
 
 /**
  * [x : string] : T
@@ -38,4 +20,19 @@ export type Try<E, T> = Success<T> | Fail<E>
 export interface Serializeable {
   toDict(): any
   inject(data: any): this
+}
+
+/**
+ * Services
+ */
+
+export interface Service<T> {
+  create?: (params: T) => Promise<Try<Error, any>>
+  update?: (params: T) => Promise<Try<Error, any>>
+  delete?: (params: T) => Promise<Try<Error, any>>
+}
+
+export interface Repositoriable<T> {
+  entityManager: EntityManager
+  findOne(property: keyof T, params: any): Promise<T>
 }

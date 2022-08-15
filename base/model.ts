@@ -1,10 +1,14 @@
 import { alias, serializable, serialize as sz } from 'serializr'
 import { Serializeable } from 'utils/interface'
 
+/**
+ * userEntity와 Sync가 맞아야한다
+ */
 export class User implements Serializeable {
-  @serializable(alias('user_email')) userEmail: string
-  @serializable(alias('user_password')) userPassword: string
-  @serializable(alias('user_name')) userName: string
+  @serializable(alias('email')) userEmail: string
+  @serializable(alias('password')) userPassword: string
+  @serializable(alias('name')) userName: string
+  @serializable token: string
 
   constructor(data = {}) {
     this.inject(data)
@@ -15,9 +19,10 @@ export class User implements Serializeable {
   }
 
   inject(data: any): this {
-    this.userEmail = data['user_email']
-    this.userPassword = data['user_password']
-    this.userName = data['user_name']
+    this.userEmail = data['email']
+    this.userPassword = data['password']
+    this.userName = data['name']
+    this.token = null
     return this
   }
 }

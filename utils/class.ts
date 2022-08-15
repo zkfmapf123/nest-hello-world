@@ -12,6 +12,7 @@ export class ValidationParamsPipe implements PipeTransform {
 
   validate(value: any, schema: ObjectSchema, model: Serializeable) {
     const { error, value: valdiateParams } = schema.validate(value)
+    this.logger.info('params : ', valdiateParams)
 
     if (error) {
       this.logger.error('validation Error', error)

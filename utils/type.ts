@@ -8,7 +8,7 @@ export enum ExceptionType {
   INTERNAL_ERR = 'interal-server-error',
 }
 
-export enum EmailType {
+export enum VerifyType {
   GMAIL = 'Gmail',
 }
 
@@ -29,4 +29,12 @@ export enum Url {
   EMAIL_VERIFY = '/email-verify',
   LOGIN = '/login',
   _ID = '/:id',
+}
+
+export enum ExceptionType {}
+
+export enum SuccessType {}
+
+export enum FailType {
+  ALREADY_EXISTS_USER = 'already_exists_user',
 }

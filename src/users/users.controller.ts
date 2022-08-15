@@ -3,34 +3,34 @@ import { User } from 'base/model'
 import { LoggerService } from 'src/common/logger.service'
 import { Url } from 'utils/type'
 import { LoginValidPipe, SingUpValidPipe } from './users.pipe'
-import { UsersService } from './users.service'
+import { UsersHandler } from './users.handler'
 
 @Controller(Url.ROOT_USERS)
 export class UsersController {
   @Inject(LoggerService) logger: LoggerService
-  @Inject(UsersService) userService: UsersService
+  @Inject(UsersHandler) userHandler: UsersHandler
 
   @Post()
   async SignUp(@Body(SingUpValidPipe) params: User) {
     this.logger.info('users/signup')
-    const result = this.userService.signUp(params)
+    return this.userHandler.signUp(params)
   }
 
-  @Post(Url.EMAIL_VERIFY)
-  async verify(@Query('signUpVerifyToken') token: string) {
-    this.logger.info('users/email-verify')
-    const result = this.userService.emailVerify(token)
-  }
+  // @Post(Url.EMAIL_VERIFY)
+  // async verify(@Query('signUpVerifyToken') token: string) {
+  //   this.logger.info('users/email-verify')
+  //   return this.userHandler.emailVerify(token)
+  // }
 
   @Post(Url.LOGIN)
   async login(@Body(LoginValidPipe) params: User) {
     this.logger.info('users/login')
-    const result = this.userService.login(params)
+    return this.userHandler.login(params)
   }
 
   @Get(Url._ID)
   async getUser(@Param('id') userId: string) {
     this.logger.info('users/getUser')
-    const result = this.userService.getUser(userId)
+    return this.userHandler.getUser(userId)
   }
 }
