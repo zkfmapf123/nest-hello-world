@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common'
 import { User } from 'base/model'
 import { LoggerService } from 'src/common/logger.service'
 import { TokenService } from 'src/common/token.service'
+import { UserEntity } from 'src/entity/user.entity'
+import { UserRepository } from 'src/repositories/users.repository'
 import { pass, Try } from 'ts-dkutil'
 import { Service } from 'utils/interface'
-import { UserRepository } from './user.repository'
 
 @Injectable()
 export class UsersService implements Service<User> {
@@ -14,12 +15,12 @@ export class UsersService implements Service<User> {
   @Inject(UserRepository) userRepository: UserRepository
   @Inject(TokenService) tokenService: TokenService
 
-  async getUserId(params: User): Promise<Try<Error, number>> {
-    this.logger.info(`${this.context} getUserId : ${params.userEmail}`)
+  async getUsers(property: keyof UserEntity, value: any): Promise<Try<Error, UserEntity>> {
+    this.logger.info(`${this.context} getUsers}`)
 
     try {
-      const users = await this.userRepository.findOne('email', params.userEmail)
-      return pass(users?.id)
+      const users = await this.userRepository.findOne(property, value)
+      return pass(users)
     } catch (e) {
       this.logger.error(e)
       return fail(e)
@@ -32,6 +33,28 @@ export class UsersService implements Service<User> {
     try {
       await this.userRepository.create(params)
       return pass(null)
+    } catch (e) {
+      this.logger.error(e)
+      return fail(e)
+    }
+  }
+
+  async login(params: User): Promise<Try<Error, boolean>> {
+    this.logger.info(`${this.context}`)
+
+    try {
+      const users = await this.userRepository.findOne('email', params.email)
+
+      if (!users) {
+        throw new Error('not exist user')
+      }
+
+      const { email, password } = users
+      const { email: _email, password: _password } = params
+
+      if (email === _email && password === _password) {
+        return pass(true)
+      }
     } catch (e) {
       this.logger.error(e)
       return fail(e)

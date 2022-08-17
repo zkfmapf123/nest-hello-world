@@ -5,9 +5,9 @@ import { Serializeable } from 'utils/interface'
  * userEntity와 Sync가 맞아야한다
  */
 export class User implements Serializeable {
-  @serializable(alias('email')) userEmail: string
-  @serializable(alias('password')) userPassword: string
-  @serializable(alias('name')) userName: string
+  @serializable(alias('email')) email: string
+  @serializable(alias('password')) password: string
+  @serializable(alias('name')) name: string
   @serializable token: string
 
   constructor(data = {}) {
@@ -19,9 +19,9 @@ export class User implements Serializeable {
   }
 
   inject(data: any): this {
-    this.userEmail = data['email']
-    this.userPassword = data['password']
-    this.userName = data['name']
+    this.email = data['email']
+    this.password = data['password']
+    this.name = data['name']
     this.token = null
     return this
   }

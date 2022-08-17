@@ -15,7 +15,7 @@ export class UsersHandler {
 
   async signUp(params: User): Promise<Try<Error, string>> {
     this.logger.info(`${this.context} signUp`)
-    const tryResult = await this.userService.getUserId(params)
+    const tryResult = await this.userService.getUsers('email', params.email)
     /**
      * error
      */
@@ -38,15 +38,13 @@ export class UsersHandler {
     )) as unknown as Try<Error, string>
   }
 
-  // emailVerify(token: string) {
-  //   this.logger.info(`${this.context} emailVerify token : ${token}`)
-  // }
-
-  login({ userEmail, userPassword }: User) {
+  async login(params: User) {
     this.logger.info(`${this.context} login`)
+    return await this.userService.login(params)
   }
 
-  getUser(userId: string) {
+  async getUser(userId: string) {
     this.logger.info(`${this.context} getUser`)
+    return await this.userService.getUsers('id', userId)
   }
 }

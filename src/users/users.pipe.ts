@@ -13,7 +13,7 @@ export class SingUpValidPipe extends ValidationParamsPipe {
 @Injectable()
 export class LoginValidPipe extends ValidationParamsPipe {
   override transform(value: any, metadata: ArgumentMetadata) {
-    return this.validate(value, LoginSchema, new VerifyToken())
+    return this.validate(value, LoginSchema, new User())
   }
 }
 
