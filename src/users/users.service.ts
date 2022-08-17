@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common'
 import { User } from 'base/model'
 import { LoggerService } from 'src/common/logger.service'
 import { TokenService } from 'src/common/token.service'
+import { UserRepository } from 'src/repositories/users.repository'
 import { pass, Try } from 'ts-dkutil'
 import { Service } from 'utils/interface'
-import { UserRepository } from './user.repository'
 
 @Injectable()
 export class UsersService implements Service<User> {
@@ -15,10 +15,10 @@ export class UsersService implements Service<User> {
   @Inject(TokenService) tokenService: TokenService
 
   async getUserId(params: User): Promise<Try<Error, number>> {
-    this.logger.info(`${this.context} getUserId : ${params.userEmail}`)
+    this.logger.info(`${this.context} getUserId : ${params.email}`)
 
     try {
-      const users = await this.userRepository.findOne('email', params.userEmail)
+      const users = await this.userRepository.findOne('email', params.email)
       return pass(users?.id)
     } catch (e) {
       this.logger.error(e)

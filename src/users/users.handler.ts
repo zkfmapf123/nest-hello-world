@@ -42,7 +42,7 @@ export class UsersHandler {
   //   this.logger.info(`${this.context} emailVerify token : ${token}`)
   // }
 
-  login({ userEmail, userPassword }: User) {
+  login({ email, password }: User) {
     this.logger.info(`${this.context} login`)
   }
 

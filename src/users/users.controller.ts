@@ -13,7 +13,7 @@ export class UsersController {
   @Post()
   async SignUp(@Body(SingUpValidPipe) params: User) {
     this.logger.info('users/signup')
-    return this.userHandler.signUp(params)
+    return await this.userHandler.signUp(params)
   }
 
   // @Post(Url.EMAIL_VERIFY)

@@ -51,9 +51,9 @@ export class VerifyFactoryService {
   }
 
   private async sendGmail(userParams: User): Promise<void> {
-    this.logger.info(`${this.context} sendGmail ${userParams.userEmail}`)
+    this.logger.info(`${this.context} sendGmail ${userParams.email}`)
     this.initMailOption()
-    const emailSendOption = this.initSendOption(userParams.userEmail, userParams.token)
+    const emailSendOption = this.initSendOption(userParams.email, userParams.token)
     await this.transporter.sendMail(emailSendOption)
   }
 }

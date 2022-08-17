@@ -19,7 +19,6 @@ export class UserRepository implements Repositoriable<UserEntity> {
   }
 
   async create(userParams: User): Promise<void> {
-    const users = userParams.toDict()
-    await this.users.save(users)
+    await this.users.save(userParams.toDict())
   }
 }
