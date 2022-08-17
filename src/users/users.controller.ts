@@ -25,7 +25,7 @@ export class UsersController {
   @Post(Url.LOGIN)
   async login(@Body(LoginValidPipe) params: User) {
     this.logger.info('users/login')
-    return this.userHandler.login(params)
+    return await this.userHandler.login(params)
   }
 
   @Get(Url._ID)
