@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { User } from 'base/model'
 import { LoggerService } from 'src/common/logger.service'
+import { jwtService } from 'src/verify/jwt.service'
 import { VerifyFactoryService } from 'src/verify/verify.factory.service'
-import { asyncVoidPipe, Try } from 'ts-dkutil'
+import { asyncVoidPipe, pass, Try } from 'ts-dkutil'
 import { FailType, VerifyType } from 'utils/type'
 import { UsersService } from './users.service'
 
@@ -12,6 +13,7 @@ export class UsersHandler {
   @Inject(LoggerService) logger: LoggerService
   @Inject(UsersService) userService: UsersService
   @Inject(VerifyFactoryService) verifyService: VerifyFactoryService
+  @Inject(jwtService) jwtService: jwtService
 
   async signUp(params: User): Promise<Try<Error, string>> {
     this.logger.info(`${this.context} signUp`)
@@ -38,9 +40,16 @@ export class UsersHandler {
     )) as unknown as Try<Error, string>
   }
 
-  async login(params: User) {
+  async login(params: User): Promise<Try<Error, string>> {
     this.logger.info(`${this.context} login`)
-    return await this.userService.login(params)
+    const isLogin = await this.userService.login(params)
+
+    if (!isLogin.result) {
+      return fail(null)
+    }
+
+    const token = this.jwtService.createToken(params)
+    return pass(token)
   }
 
   async getUser(userId: string) {
