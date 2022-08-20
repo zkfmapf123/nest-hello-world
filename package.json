@@ -18,10 +18,12 @@
     "jest:unit": "jest --config ./jest-unit.json --coverage"
   },
   "dependencies": {
+    "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.0.4",
+    "@nestjs/terminus": "^9.1.1",
     "@nestjs/typeorm": "^8.0.2",
     "@types/dotenv": "^8.2.0",
     "chalk": "^4.1.0",
