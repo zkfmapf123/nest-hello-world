@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Headers, Inject, Param, Post, Query, UseGuards } from '@nestjs/common'
 import { User } from 'base/model'
 import { LoggerService } from 'src/common/logger.service'
 import { Url } from 'utils/type'
 import { LoginValidPipe, SingUpValidPipe } from './users.pipe'
 import { UsersHandler } from './users.handler'
+import { AuthGuard } from 'src/guard/auth.guard'
 
 @Controller(Url.ROOT_USERS)
 export class UsersController {
@@ -19,7 +20,7 @@ export class UsersController {
   // @Post(Url.EMAIL_VERIFY)
   // async verify(@Query('signUpVerifyToken') token: string) {
   //   this.logger.info('users/email-verify')
-  //   return this.userHandler.emailVerify(token)
+  // return this.userHandler.emailVerify(token)
   // }
 
   @Post(Url.LOGIN)
@@ -28,9 +29,15 @@ export class UsersController {
     return await this.userHandler.login(params)
   }
 
+  /**
+   * @desc
+   * use bearer token
+   */
+  @UseGuards(AuthGuard)
   @Get(Url._ID)
-  async getUser(@Param('id') userId: string) {
+  async getUser(@Headers() headers: any) {
     this.logger.info('users/getUser')
-    return this.userHandler.getUser(userId)
+    console.log(headers)
+    // return this.userHandler.getUser(userId)
   }
 }
