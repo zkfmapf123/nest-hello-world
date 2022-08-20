@@ -3,7 +3,7 @@
  */
 
 import { Try } from 'ts-dkutil'
-import { EntityManager } from 'typeorm'
+import { Connection, EntityManager } from 'typeorm'
 
 export interface Dictionary<T> {
   [x: string]: T
@@ -17,7 +17,8 @@ export interface Dictionary<T> {
 /**
  * serialize
  */
-export interface Serializeable {
+export interface Serializeable<T> {
+  toEntity(): T
   toDict(): any
   inject(data: any): this
 }
@@ -35,4 +36,10 @@ export interface Service<T> {
 export interface Repositoriable<T> {
   entityManager: EntityManager
   findOne(property: keyof T, params: any): Promise<T>
+}
+
+export interface TransactionAble {
+  /**
+   * Transaction method 정의
+   */
 }

@@ -1,10 +1,11 @@
 import { alias, serializable, serialize as sz } from 'serializr'
+import { UserEntity } from 'src/entity/user.entity'
 import { Serializeable } from 'utils/interface'
 
 /**
  * userEntity와 Sync가 맞아야한다
  */
-export class User implements Serializeable {
+export class User implements Serializeable<UserEntity> {
   @serializable(alias('email')) email: string
   @serializable(alias('password')) password: string
   @serializable(alias('name')) name: string
@@ -12,6 +13,12 @@ export class User implements Serializeable {
 
   constructor(data = {}) {
     this.inject(data)
+  }
+
+  toEntity(): UserEntity {
+    const user = this.toDict()
+    const userEntity = new UserEntity(user)
+    return userEntity
   }
 
   toDict() {
@@ -27,7 +34,7 @@ export class User implements Serializeable {
   }
 }
 
-export class VerifyToken implements Serializeable {
+export class VerifyToken implements Serializeable<never> {
   @serializable(alias('sign_up_verify_token')) signUpVerifyToken: string
 
   constructor(data = {}) {
@@ -36,6 +43,10 @@ export class VerifyToken implements Serializeable {
 
   toDict() {
     return sz(this)
+  }
+
+  toEntity(): never {
+    throw new Error('not have entity')
   }
 
   inject(data: any): this {

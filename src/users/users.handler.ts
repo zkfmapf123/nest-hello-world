@@ -33,8 +33,8 @@ export class UsersHandler {
     }
 
     return (await asyncVoidPipe(
+      // async () => this.verifyService.sendVerify(VerifyType.GMAIL, params),
       async () => this.userService.create(params),
-      async () => this.verifyService.sendVerify(VerifyType.GMAIL, params),
     )) as unknown as Try<Error, string>
   }
 

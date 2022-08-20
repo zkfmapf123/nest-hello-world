@@ -16,7 +16,7 @@ export class UsersService implements Service<User> {
   @Inject(TokenService) tokenService: TokenService
 
   async getUsers(property: keyof UserEntity, value: any): Promise<Try<Error, UserEntity>> {
-    this.logger.info(`${this.context} getUsers}`)
+    this.logger.info(`${this.context} getUsers`)
 
     try {
       const users = await this.userRepository.findOne(property, value)
@@ -31,7 +31,7 @@ export class UsersService implements Service<User> {
     this.logger.info(`${this.context} update`)
 
     try {
-      await this.userRepository.create(params)
+      await this.userRepository.transactionCreate(params)
       return pass(null)
     } catch (e) {
       this.logger.error(e)

@@ -2,6 +2,14 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('Users')
 export class UserEntity {
+  constructor(users = {}) {
+    this.id = users['id']
+    this.name = users['name']
+    this.email = users['email']
+    this.password = users['password']
+    this.token = users['token']
+  }
+
   @PrimaryGeneratedColumn('increment')
   id: number
 
