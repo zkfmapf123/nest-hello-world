@@ -7,6 +7,10 @@ import { ParseMiddleware } from './middleware/parse.middleware'
 import { SessionMiddleware } from './middleware/session.middleware'
 import { UsersController } from './users/users.controller'
 import { UsersModule } from './users/users.module'
+import { HealthCheckController } from './health-check/health-check.controller'
+import { HealthCheckModule } from './health-check/health-check.module'
+import { TerminusModule } from '@nestjs/terminus'
+import { HttpModule } from '@nestjs/axios'
 
 const appModuels = [UsersModule]
 const middlewares = [AuthMiddleware, CookieMiddleware, ParseMiddleware, SessionMiddleware]
@@ -28,7 +32,7 @@ const queues = []
       synchronize: true, // do not production
     }),
   ],
-  controllers: [],
+  // controllers: [HealthCheckController],
 })
 export class AppModule implements NestModule {
   // Logger
