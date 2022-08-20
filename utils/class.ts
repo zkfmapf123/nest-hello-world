@@ -10,7 +10,7 @@ export class ValidationParamsPipe implements PipeTransform {
     throw new Error('must be override')
   }
 
-  validate(value: any, schema: ObjectSchema, model: Serializeable) {
+  validate(value: any, schema: ObjectSchema, model: Serializeable<any>) {
     const { error, value: valdiateParams } = schema.validate(value)
     this.logger.info('params : ', valdiateParams)
 
